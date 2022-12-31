@@ -4,12 +4,14 @@ class LoginFormField extends StatefulWidget {
   final controller;
   final String hintText;
   final bool obscureText;
+  final String? Function(String?)? validator;
 
   const LoginFormField({
     super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
+    required this.validator,
   });
 
   @override
@@ -25,6 +27,7 @@ class _LoginFormFieldState extends State<LoginFormField> {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextFormField(
         controller: widget.controller,
+        validator: widget.validator,
         obscureText: isPasswordVisible,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(

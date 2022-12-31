@@ -19,9 +19,18 @@ class _LoginState extends State<Login> {
   // controllers for formfield
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final formGlobalKey = GlobalKey<FormState>();
+
+  void validateUserLogin() {
+    if (formGlobalKey.currentState!.validate()) {
+      formGlobalKey.currentState!.save();
+      userLogin();
+    }
+  }
 
   void userLogin() async {
     try {
+      print("=== user login called ===");
       var loginRequest = LoginRequest(
         username: usernameController.text,
         password: passwordController.text,
@@ -64,76 +73,93 @@ class _LoginState extends State<Login> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 50),
+            child: Form(
+              key: formGlobalKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: 50),
 
-                // logo
-                const Icon(
-                  Icons.lock,
-                  size: 100,
-                ),
-
-                const SizedBox(height: 50),
-
-                // welcome message
-                Text(
-                  "Welcome back! you've been missed!",
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 16,
+                  // logo
+                  const Icon(
+                    Icons.lock,
+                    size: 100,
                   ),
-                ),
 
-                const SizedBox(height: 50),
+                  const SizedBox(height: 50),
 
-                // username, password
-                LoginFormField(
-                  controller: usernameController,
-                  hintText: "Username",
-                  obscureText: false,
-                ),
-
-                const SizedBox(height: 20),
-
-                LoginFormField(
-                  controller: passwordController,
-                  hintText: "Password",
-                  obscureText: true,
-                ),
-
-                const SizedBox(height: 30),
-
-                // login button
-                LoginButton(onTap: userLogin, buttonLabel: "Login In"),
-
-                const SizedBox(height: 200),
-
-                // redirect to register
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      "Don't have an account?",
-                      style: TextStyle(
-                        color: Color.fromRGBO(97, 97, 97, 1),
-                      ),
+                  // welcome message
+                  Text(
+                    "Welcome back! you've been missed!",
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 16,
                     ),
-                    const SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () => _navigateToSignup(context),
-                      child: const Text(
-                        "Register Now",
+                  ),
+
+                  const SizedBox(height: 50),
+
+                  // username, password
+                  LoginFormField(
+                    controller: usernameController,
+                    hintText: "Username",
+                    obscureText: false,
+                    validator: (username) {
+                      if (username!.isEmpty ||
+                          !RegExp(r'^[a-z A-Z]+$').hasMatch(username)) {
+                        return "Invalid username";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  LoginFormField(
+                    controller: passwordController,
+                    hintText: "Password",
+                    obscureText: true,
+                    validator: (password) {
+                      if (password!.isEmpty || password.length >= 6) {
+                        return "Invalid password";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  // login button
+                  LoginButton(
+                      onTap: validateUserLogin, buttonLabel: "Login In"),
+
+                  const SizedBox(height: 200),
+
+                  // redirect to register
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        "Don't have an account?",
                         style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(97, 97, 97, 1),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () => _navigateToSignup(context),
+                        child: const Text(
+                          "Register Now",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

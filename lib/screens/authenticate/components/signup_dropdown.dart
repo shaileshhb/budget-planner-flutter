@@ -6,6 +6,8 @@ class DropdownField extends StatelessWidget {
   final List<String>? items;
   final String hintText;
   final Function(String?)? onChanged;
+  final String Function(String?)? validator;
+
   // final Object? selectedValue;
 
   DropdownField({
@@ -14,6 +16,7 @@ class DropdownField extends StatelessWidget {
     this.selectedValue,
     required this.hintText,
     required this.onChanged,
+    required this.validator,
   });
 
   @override
