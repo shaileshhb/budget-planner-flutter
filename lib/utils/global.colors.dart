@@ -1,0 +1,3 @@
+class GlobalColors {
+  // String backgroundColor = ""
+}
