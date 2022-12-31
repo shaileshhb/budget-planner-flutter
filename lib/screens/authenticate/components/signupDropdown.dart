@@ -18,18 +18,37 @@ class DropdownField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      value: selectedValue,
-      items: items
-          ?.map(
-            (e) => DropdownMenuItem(
-              value: e,
-              child: Text(e),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: DropdownButtonFormField(
+        value: selectedValue,
+        items: items
+            ?.map(
+              (e) => DropdownMenuItem(
+                value: e,
+                child: Text(e),
+              ),
+            )
+            .toList(),
+        onChanged: onChanged,
+        hint: Text(hintText),
+        icon: const Icon(Icons.keyboard_arrow_down_rounded),
+        decoration: const InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
             ),
-          )
-          .toList(),
-      onChanged: onChanged,
-      hint: Text(hintText),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+          ),
+          fillColor: Color.fromRGBO(250, 250, 250, 1),
+          filled: true,
+          // hintText: hintText,
+        ),
+      ),
     );
   }
 }
