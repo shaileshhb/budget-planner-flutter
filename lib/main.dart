@@ -11,12 +11,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Money Wisely',
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-      ),
-      home: const Wrapper(),
+    return const MaterialApp(
+      // title: 'Money Wisely',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.lightBlue,
+      // ),
+      home: Wrapper(),
     );
   }
 }

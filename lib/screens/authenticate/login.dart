@@ -1,5 +1,9 @@
+import 'package:budget_planner_flutter/models/login_request.dart';
+import 'package:budget_planner_flutter/models/login_response.dart';
 import 'package:budget_planner_flutter/screens/authenticate/components/loginButton.dart';
 import 'package:budget_planner_flutter/screens/authenticate/components/loginFormField.dart';
+import 'package:budget_planner_flutter/screens/authenticate/signup.dart';
+import 'package:budget_planner_flutter/services/user_login.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -14,40 +18,33 @@ class _LoginState extends State<Login> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void userLogin() {
-    try {} catch (err) {
+  late LoginRequest loginRequest;
+  late LoginResponse? loginResponse;
+
+  void userLogin() async {
+    try {
+      loginRequest = LoginRequest(
+        username: usernameController.text,
+        password: passwordController.text,
+      );
+
+      loginResponse = await AuthenticationService().userLogin(loginRequest);
+
+      if (loginResponse != null) {
+        // navigate to dashboard
+      }
+    } catch (err) {
       print(err);
     }
   }
 
+  void _navigateToNextScreen(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Register()));
+  }
+
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     backgroundColor: const Color.fromRGBO(108, 189, 255, 1),
-    //     title: const Text("Money Wisely"),
-    //     centerTitle: true,
-    //     elevation: 1,
-    //   ),
-    //   body: Stack(
-    //     children: <Widget>[
-    //       Container(
-    //         decoration: const BoxDecoration(
-    //           image: DecorationImage(
-    //             image: AssetImage("images/coins.jpg"),
-    //             fit: BoxFit.cover,
-    //           ),
-    //         ),
-    //       ),
-    //       const Center(
-    //         child: Card(
-    //           elevation: 2,
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
-
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -63,7 +60,7 @@ class _LoginState extends State<Login> {
                 size: 100,
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 40),
 
               // welcome message
               Text(
@@ -74,7 +71,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 35),
 
               // username, password
               LoginFormField(
@@ -91,29 +88,32 @@ class _LoginState extends State<Login> {
                 obscureText: true,
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
 
               // login button
               LoginButton(onTap: userLogin),
 
-              const SizedBox(height: 200),
+              const SizedBox(height: 30),
 
               // redirect to register
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget>[
-                  Text(
+                children: <Widget>[
+                  const Text(
                     "Don't have an account?",
                     style: TextStyle(
                       color: Color.fromRGBO(97, 97, 97, 1),
                     ),
                   ),
-                  SizedBox(width: 5),
-                  Text(
-                    "Register Now",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(width: 5),
+                  GestureDetector(
+                    onTap: () => _navigateToNextScreen(context),
+                    child: const Text(
+                      "Register Now",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
