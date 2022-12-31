@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoginFormField extends StatelessWidget {
+class LoginFormField extends StatefulWidget {
   final controller;
   final String hintText;
   final bool obscureText;
@@ -13,12 +13,19 @@ class LoginFormField extends StatelessWidget {
   });
 
   @override
+  State<LoginFormField> createState() => _LoginFormFieldState();
+}
+
+class _LoginFormFieldState extends State<LoginFormField> {
+  bool isPasswordVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
+        controller: widget.controller,
+        obscureText: isPasswordVisible,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
@@ -30,9 +37,21 @@ class LoginFormField extends StatelessWidget {
               color: Colors.grey.shade400,
             ),
           ),
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  icon: isPasswordVisible
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    });
+                  },
+                )
+              : null,
           fillColor: Colors.grey.shade50,
           filled: true,
-          hintText: hintText,
+          hintText: widget.hintText,
         ),
       ),
     );

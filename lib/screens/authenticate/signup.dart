@@ -1,12 +1,14 @@
 import 'package:budget_planner_flutter/models/auth/register_request.dart';
-import 'package:budget_planner_flutter/screens/authenticate/components/signupDropdown.dart';
+import 'package:budget_planner_flutter/screens/authenticate/components/signup_dropdown.dart';
 import 'package:budget_planner_flutter/screens/authenticate/login.dart';
+import 'package:budget_planner_flutter/screens/home/dashboard.dart';
 import 'package:budget_planner_flutter/services/auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/user.shared_preference.dart';
-import 'components/loginButton.dart';
-import 'components/loginFormField.dart';
+import 'components/date_of_birth.dart';
+import 'components/login_button.dart';
+import 'components/login_form_field.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -54,18 +56,30 @@ class _RegisterState extends State<Register> {
 
       if (loginResponse != null) {
         // store token in shared preferences.
-        await UserSharedPreference.setAuthorizationToken(loginResponse.token);
+        _setAuthorizationToken(loginResponse.token);
 
         // navigate to dashboard
+        if (mounted) {
+          _navigateToDashboard(context);
+        }
       }
     } catch (err) {
       print(err);
     }
   }
 
+  void _setAuthorizationToken(String token) async {
+    await UserSharedPreference.setAuthorizationToken(token);
+  }
+
   void _navigateToLogin(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Login()));
+  }
+
+  void _navigateToDashboard(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Dashboard()));
   }
 
   @override
@@ -162,10 +176,15 @@ class _RegisterState extends State<Register> {
 
                 const SizedBox(height: 15),
 
-                LoginFormField(
+                // LoginFormField(
+                // controller: dateOfBirthController,
+                // hintText: "Date of birth",
+                //   obscureText: false,
+                // ),
+
+                DateOfBirthField(
                   controller: dateOfBirthController,
                   hintText: "Date of birth",
-                  obscureText: false,
                 ),
 
                 const SizedBox(height: 20),

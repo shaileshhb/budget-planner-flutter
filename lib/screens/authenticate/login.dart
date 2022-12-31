@@ -1,13 +1,12 @@
-import 'package:budget_planner_flutter/screens/authenticate/components/loginButton.dart';
-import 'package:budget_planner_flutter/screens/authenticate/components/loginFormField.dart';
+import 'package:budget_planner_flutter/screens/authenticate/components/login_button.dart';
+import 'package:budget_planner_flutter/screens/authenticate/components/login_form_field.dart';
 import 'package:budget_planner_flutter/screens/authenticate/signup.dart';
 import 'package:budget_planner_flutter/services/auth.dart';
 import 'package:budget_planner_flutter/utils/user.shared_preference.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/auth/login_request.dart';
-import '../../models/auth/login_response.dart';
+import '../home/dashboard.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -32,18 +31,30 @@ class _LoginState extends State<Login> {
 
       if (loginResponse != null) {
         // store token in shared preferences.
-        await UserSharedPreference.setAuthorizationToken(loginResponse.token);
+        _setAuthorizationToken(loginResponse.token);
 
         // navigate to dashboard
+        if (mounted) {
+          _navigateToDashboard(context);
+        }
       }
     } catch (err) {
       print(err);
     }
   }
 
+  void _setAuthorizationToken(String token) async {
+    await UserSharedPreference.setAuthorizationToken(token);
+  }
+
   void _navigateToSignup(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Register()));
+  }
+
+  void _navigateToDashboard(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Dashboard()));
   }
 
   @override
