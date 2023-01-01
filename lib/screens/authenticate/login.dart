@@ -135,7 +135,9 @@ class _LoginState extends State<Login> {
 
                   // login button
                   LoginButton(
-                      onTap: validateUserLogin, buttonLabel: "Login In"),
+                    onTap: validateUserLogin,
+                    buttonLabel: "LogIn",
+                  ),
 
                   const SizedBox(height: 200),
 
