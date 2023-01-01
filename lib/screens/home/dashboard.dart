@@ -1,5 +1,6 @@
 import 'package:budget_planner_flutter/screens/home/envelop.dart';
 import 'package:budget_planner_flutter/screens/profile/profile.dart';
+import 'package:budget_planner_flutter/screens/transaction/view_transaction.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -14,7 +15,7 @@ class _DashboardState extends State<Dashboard> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     Envelop(),
-    Envelop(),
+    ViewTransactions(),
     Profile(),
     // Envelop(),
   ];
@@ -47,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.money),
-            label: "Envelops",
+            label: "Transactions",
           ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.account_balance),

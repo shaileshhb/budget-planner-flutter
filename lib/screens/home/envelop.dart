@@ -1,8 +1,8 @@
+import 'package:budget_planner_flutter/screens/skeleton/skeleton_builder.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/envelop/envelop.dart';
 import '../../services/envelop/envelops.dart';
-import 'components/skeleton_container.dart';
 
 class Envelop extends StatefulWidget {
   const Envelop({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class EnvelopState extends State<Envelop> {
         shrinkWrap: true,
         itemCount: isLoaded ? envelops!.length : 5,
         itemBuilder: (context, index) {
-          return isLoaded ? envelopCard(index) : buildSkeleton(context);
+          return isLoaded ? envelopCard(index) : const SkeletonCardBuilder();
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -61,52 +61,6 @@ class EnvelopState extends State<Envelop> {
         },
         backgroundColor: Colors.grey[800],
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-
-  Widget buildSkeleton(BuildContext context) => skeletonEnvelopCard();
-
-  Card skeletonEnvelopCard() {
-    return Card(
-      elevation: 8.0,
-      margin: const EdgeInsets.all(10.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-        ),
-        child: skeletonEnvelopList(),
-      ),
-    );
-  }
-
-  ListTile skeletonEnvelopList() {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 20.0,
-        vertical: 10.0,
-      ),
-      leading: Container(
-        padding: const EdgeInsets.only(
-          right: 12.0,
-        ),
-        decoration: const BoxDecoration(
-          border: Border(
-            right: BorderSide(
-              width: 1.0,
-              color: Colors.white24,
-            ),
-          ),
-        ),
-        child: const Icon(Icons.account_balance_wallet),
-      ),
-      title: EnvelopSkeleton.square(
-        width: MediaQuery.of(context).size.width * 0.6,
-        height: 15.0,
-      ),
-      subtitle: EnvelopSkeleton.square(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: 12.0,
       ),
     );
   }

@@ -7,6 +7,8 @@ import 'dart:convert';
 List<Envelops> envelopsFromJson(String str) =>
     List<Envelops>.from(json.decode(str).map((x) => Envelops.fromJson(x)));
 
+Envelops envelopFromJson(String str) => Envelops.fromJson(json.decode(str));
+
 String envelopsToJson(List<Envelops> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
