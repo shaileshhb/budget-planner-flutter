@@ -99,7 +99,10 @@ class EnvelopState extends State<Envelop> {
             ),
           ),
         ),
-        child: const Icon(Icons.account_balance_wallet),
+        child: const Icon(
+          Icons.account_balance_wallet,
+          size: 40.0,
+        ),
       ),
       title: Text(
         envelops![index].name,

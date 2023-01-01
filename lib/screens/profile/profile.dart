@@ -1,6 +1,8 @@
 import 'package:budget_planner_flutter/models/auth/user.dart';
 import 'package:budget_planner_flutter/screens/authenticate/components/signup_dropdown.dart';
+import 'package:budget_planner_flutter/screens/authenticate/login.dart';
 import 'package:budget_planner_flutter/services/auth/auth.dart';
+import 'package:budget_planner_flutter/utils/user.shared_preference.dart';
 import 'package:flutter/material.dart';
 
 import '../authenticate/components/date_of_birth.dart';
@@ -91,10 +93,17 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  // void _navigateToDashboard(BuildContext context) {
-  //   Navigator.pushReplacement(
-  //       context, MaterialPageRoute(builder: (context) => const Dashboard()));
-  // }
+  void _navigateToLogin(BuildContext context) {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const Login()));
+  }
+
+  void onLogoutClick(BuildContext context) {
+    UserSharedPreference.removeUserID();
+    UserSharedPreference.removeAuthorizationToken();
+
+    _navigateToLogin(context);
+  }
 
   @override
   void initState() {
@@ -113,6 +122,12 @@ class _ProfileState extends State<Profile> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 1,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => onLogoutClick(context),
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

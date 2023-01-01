@@ -114,7 +114,10 @@ class _ViewTransactionsState extends State<ViewTransactions> {
             ),
           ),
         ),
-        child: const Icon(Icons.account_balance_wallet),
+        child: const Icon(
+          Icons.monetization_on,
+          size: 40.0,
+        ),
       ),
       title: Text(
         transactions![index].payee,

@@ -24,4 +24,12 @@ class UserSharedPreference {
   static String? getUserID() {
     return _preferences.getString(_keyUserID);
   }
+
+  static void removeAuthorizationToken() async {
+    await _preferences.remove(_keyAuthToken);
+  }
+
+  static void removeUserID() async {
+    await _preferences.remove(_keyUserID);
+  }
 }
