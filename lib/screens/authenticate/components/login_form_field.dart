@@ -28,7 +28,7 @@ class _LoginFormFieldState extends State<LoginFormField> {
       child: TextFormField(
         controller: widget.controller,
         validator: widget.validator,
-        obscureText: isPasswordVisible,
+        obscureText: widget.obscureText ? !isPasswordVisible : false,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(

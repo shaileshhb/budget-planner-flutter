@@ -2,7 +2,7 @@ import 'package:budget_planner_flutter/models/auth/register_request.dart';
 import 'package:budget_planner_flutter/screens/authenticate/components/signup_dropdown.dart';
 import 'package:budget_planner_flutter/screens/authenticate/login.dart';
 import 'package:budget_planner_flutter/screens/home/dashboard.dart';
-import 'package:budget_planner_flutter/services/auth.dart';
+import 'package:budget_planner_flutter/services/auth/auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/user.shared_preference.dart';
@@ -66,6 +66,7 @@ class _RegisterState extends State<Register> {
       if (loginResponse != null) {
         // store token in shared preferences.
         _setAuthorizationToken(loginResponse.token);
+        _setUserID(loginResponse.userId);
 
         // navigate to dashboard
         if (mounted) {
@@ -81,13 +82,17 @@ class _RegisterState extends State<Register> {
     await UserSharedPreference.setAuthorizationToken(token);
   }
 
+  void _setUserID(String userID) async {
+    await UserSharedPreference.setUserID(userID);
+  }
+
   void _navigateToLogin(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const Login()));
   }
 
   void _navigateToDashboard(BuildContext context) {
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const Dashboard()));
   }
 
@@ -180,7 +185,7 @@ class _RegisterState extends State<Register> {
                     hintText: "Password",
                     obscureText: true,
                     validator: (password) {
-                      if (password!.isEmpty || password.length >= 6) {
+                      if (password!.isEmpty || password.length < 6) {
                         return "Invalid password";
                       }
                       return null;
