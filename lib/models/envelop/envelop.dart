@@ -12,17 +12,19 @@ Envelops envelopFromJson(String str) => Envelops.fromJson(json.decode(str));
 String envelopsToJson(List<Envelops> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+String envelopToJson(Envelops data) => json.encode(data.toJson());
+
 class Envelops {
   Envelops({
-    required this.id,
+    this.id,
+    this.userId,
     required this.name,
-    required this.userId,
     required this.amount,
   });
 
-  String id;
+  String? id;
   String name;
-  String userId;
+  String? userId;
   double amount;
 
   factory Envelops.fromJson(Map<String, dynamic> json) => Envelops(

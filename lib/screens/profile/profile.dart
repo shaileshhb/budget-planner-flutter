@@ -28,13 +28,13 @@ class _ProfileState extends State<Profile> {
 
   final genderList = ["Select gender", "Male", "Female", "Other"];
 
-  genderListState() {
+  void initializeGender() {
     selectedValue = genderList[0];
   }
 
   String? selectedValue = "";
 
-  onGenderChange(String? gender) {
+  void onGenderChange(String? gender) {
     setState(() {
       selectedValue = gender;
     });
@@ -42,7 +42,7 @@ class _ProfileState extends State<Profile> {
 
   User? user;
 
-  getUser() async {
+  void getUser() async {
     try {
       var response = await AuthenticationService().getUser();
       if (response != null) {
@@ -108,7 +108,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    genderListState();
+    initializeGender();
     getUser();
   }
 
@@ -137,15 +137,7 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const SizedBox(height: 50),
-
-                  // // logo
-                  // const Icon(
-                  //   Icons.lock,
-                  //   size: 60,
-                  // ),
-
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 70),
 
                   // welcome message
                   Text(

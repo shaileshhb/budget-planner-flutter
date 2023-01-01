@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../skeleton/skeleton_builder.dart';
+import 'add_transaction.dart';
 
 class ViewTransactions extends StatefulWidget {
   const ViewTransactions({Key? key}) : super(key: key);
@@ -35,6 +36,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
       if (response != null) {
         setState(() {
           transactions = response;
+          print("transactions -> $transactions");
           isLoaded = true;
           return;
         });
@@ -51,6 +53,11 @@ class _ViewTransactionsState extends State<ViewTransactions> {
   void initState() {
     super.initState();
     getUserTransactions();
+  }
+
+  void _navigateToAddTransaction(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const AddTransaction()));
   }
 
   @override
@@ -71,7 +78,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("floating action button clicked");
+          _navigateToAddTransaction(context);
         },
         backgroundColor: Colors.grey[800],
         child: const Icon(Icons.add),

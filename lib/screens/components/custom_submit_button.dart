@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
+class CustomSubmitButton extends StatelessWidget {
   final Function()? onTap;
   final String buttonLabel;
 
-  const LoginButton({
+  const CustomSubmitButton({
     super.key,
     required this.onTap,
     required this.buttonLabel,

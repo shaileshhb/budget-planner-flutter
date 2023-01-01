@@ -30,4 +30,28 @@ class TransactionService {
     }
     return null;
   }
+
+  Future<bool> addUserTransaction(Transaction transaction) async {
+    var client = http.Client();
+
+    var userID = UserSharedPreference.getUserID();
+    var authorizationToken = UserSharedPreference.getAuthorizationToken();
+
+    var uri =
+        Uri.parse('${GlobalConstants.baseURL}/users/$userID/transactions');
+
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $authorizationToken"
+    };
+
+    var body = transactionToJson(transaction);
+
+    var response = await client.post(uri, body: body, headers: headers);
+
+    if (response.statusCode == 201) {
+      return true;
+    }
+    return false;
+  }
 }

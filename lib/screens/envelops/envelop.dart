@@ -1,17 +1,19 @@
+import 'package:budget_planner_flutter/screens/envelops/add_envelop.dart';
 import 'package:budget_planner_flutter/screens/skeleton/skeleton_builder.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/envelop/envelop.dart';
 import '../../services/envelop/envelops.dart';
+import '../transaction/add_transaction.dart';
 
-class Envelop extends StatefulWidget {
-  const Envelop({Key? key}) : super(key: key);
+class ViewEnvelop extends StatefulWidget {
+  const ViewEnvelop({Key? key}) : super(key: key);
 
   @override
-  State<Envelop> createState() => EnvelopState();
+  State<ViewEnvelop> createState() => ViewEnvelopState();
 }
 
-class EnvelopState extends State<Envelop> {
+class ViewEnvelopState extends State<ViewEnvelop> {
   List<Envelops>? envelops;
   bool isLoaded = false;
 
@@ -36,6 +38,11 @@ class EnvelopState extends State<Envelop> {
     }
   }
 
+  void _navigateToAddEnvelop(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const AddEnvelop()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +64,7 @@ class EnvelopState extends State<Envelop> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("floating action button clicked");
+          _navigateToAddEnvelop(context);
         },
         backgroundColor: Colors.grey[800],
         child: const Icon(Icons.add),

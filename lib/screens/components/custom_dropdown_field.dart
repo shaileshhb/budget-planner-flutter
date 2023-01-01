@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class DropdownField extends StatelessWidget {
+class CustomDropdownField extends StatelessWidget {
   // final controller;
   final String? selectedValue;
   final List<String>? items;
   final String hintText;
   final Function(String?)? onChanged;
-  final String Function(String?)? validator;
+  final String? Function(String?)? validator;
 
   // final Object? selectedValue;
 
-  const DropdownField({
+  const CustomDropdownField({
     super.key,
     required this.items,
     this.selectedValue,

@@ -1,4 +1,4 @@
-import 'package:budget_planner_flutter/screens/home/envelop.dart';
+import 'package:budget_planner_flutter/screens/envelops/envelop.dart';
 import 'package:budget_planner_flutter/screens/profile/profile.dart';
 import 'package:budget_planner_flutter/screens/transaction/view_transaction.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Envelop(),
+    ViewEnvelop(),
     ViewTransactions(),
     Profile(),
     // Envelop(),

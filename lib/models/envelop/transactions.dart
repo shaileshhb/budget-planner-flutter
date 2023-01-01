@@ -12,22 +12,24 @@ List<Transaction> transactionsFromJson(String str) => List<Transaction>.from(
 String transactionsToJson(List<Transaction> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+String transactionToJson(Transaction data) => json.encode(data.toJson());
+
 class Transaction {
   Transaction({
     this.id,
+    this.description,
+    this.envelop,
     required this.payee,
     required this.amount,
     required this.date,
     required this.transactionType,
     required this.envelopId,
-    this.description,
-    this.envelop,
   });
 
   String? id;
   String payee;
-  int amount;
-  DateTime date;
+  double amount;
+  String date;
   String transactionType;
   dynamic description;
   Envelops? envelop;
@@ -36,8 +38,8 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
         id: json["id"],
         payee: json["payee"],
-        amount: json["amount"],
-        date: DateTime.parse(json["date"]),
+        amount: json["amount"].toDouble(),
+        date: json["date"],
         transactionType: json["transactionType"],
         description: json["description"],
         envelop: Envelops.fromJson(json["envelop"]),
@@ -48,10 +50,10 @@ class Transaction {
         "id": id,
         "payee": payee,
         "amount": amount,
-        "date": date.toIso8601String(),
+        "date": date,
         "transactionType": transactionType,
         "description": description,
-        "envelop": envelop!.toJson(),
+        "envelop": envelop == null ? null : envelop!.toJson(),
         "envelopID": envelopId,
       };
 }
