@@ -44,7 +44,7 @@ class EnvelopService {
 
     var response = await client.post(uri, body: body, headers: headers);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 202) {
       return true;
     }
     return false;

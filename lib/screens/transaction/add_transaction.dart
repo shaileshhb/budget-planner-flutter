@@ -117,6 +117,7 @@ class _AddTransactionState extends State<AddTransaction> {
       );
 
       var response = await TransactionService().addUserTransaction(transaction);
+      print(response);
 
       if (response) {
         _navigateToViewTransaction(context);
@@ -130,6 +131,7 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   void _navigateToViewTransaction(BuildContext context) {
+    print("_navigateToViewTransaction");
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ViewTransactions()));
   }
@@ -155,7 +157,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 children: <Widget>[
                   const SizedBox(height: 30),
                   Text(
-                    "I am proud of you. Keep tracking your spenings!!",
+                    "I am proud of you. Keep tracking your spendings!!",
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: 16,
