@@ -115,9 +115,9 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.blueGrey[400],
         title: const Text("Money Wisely"),
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -143,7 +143,7 @@ class _ProfileState extends State<Profile> {
                   Text(
                     user != null ? "Welcome! ${user!.name}" : "Welcome!",
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: Colors.blueGrey[700],
                       fontSize: 16,
                     ),
                   ),

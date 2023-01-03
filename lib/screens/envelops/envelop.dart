@@ -46,27 +46,29 @@ class ViewEnvelopState extends State<ViewEnvelop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.blueGrey[400],
         title: const Text("Money Wisely"),
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 1,
       ),
-      body: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: isLoaded ? envelops!.length : 5,
-        itemBuilder: (context, index) {
-          return isLoaded ? envelopCard(index) : const SkeletonCardBuilder();
-        },
+      body: SafeArea(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: isLoaded ? envelops!.length : 5,
+          itemBuilder: (context, index) {
+            return isLoaded ? envelopCard(index) : const SkeletonCardBuilder();
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _navigateToAddEnvelop(context);
         },
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.blueGrey[400],
         child: const Icon(Icons.add),
       ),
     );
@@ -76,12 +78,52 @@ class ViewEnvelopState extends State<ViewEnvelop> {
     return Card(
       elevation: 8.0,
       margin: const EdgeInsets.all(10.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
+      child: Stack(children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0),
+            gradient: LinearGradient(
+              colors: ((envelops![index].amountSpent! /
+                              envelops![index].amount) *
+                          100 <=
+                      50.0)
+                  ? [
+                      const Color.fromARGB(255, 125, 219, 161),
+                      const Color.fromARGB(255, 121, 221, 166)
+                    ]
+                  : ((envelops![index].amountSpent! / envelops![index].amount) *
+                              100 <=
+                          75.0)
+                      ? [
+                          const Color.fromARGB(255, 241, 241, 78),
+                          const Color.fromARGB(255, 241, 241, 71)
+                        ]
+                      : [Colors.pink, Colors.red],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    ((envelops![index].amountSpent! / envelops![index].amount) *
+                                100 <=
+                            50.0)
+                        ? Colors.green
+                        : ((envelops![index].amountSpent! /
+                                        envelops![index].amount) *
+                                    100 <=
+                                75.0)
+                            ? Colors.yellow
+                            : Colors.red,
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+            // color: Colors.blueGrey[300],
+          ),
+          child: envelopListTitle(index),
         ),
-        child: envelopListTitle(index),
-      ),
+      ]),
     );
   }
 
@@ -122,7 +164,7 @@ class ViewEnvelopState extends State<ViewEnvelop> {
       subtitle: Text(
         envelops![index].amount.toString(),
         style: const TextStyle(
-          color: Colors.grey,
+          color: Colors.black,
           fontSize: 12.0,
         ),
       ),

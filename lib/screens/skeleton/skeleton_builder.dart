@@ -12,7 +12,8 @@ class SkeletonCardBuilder extends StatelessWidget {
       margin: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: Colors.blueGrey[100],
+          borderRadius: BorderRadius.circular(10.0),
         ),
         child: skeletonEnvelopList(context),
       ),

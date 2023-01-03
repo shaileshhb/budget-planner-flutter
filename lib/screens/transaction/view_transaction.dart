@@ -63,7 +63,14 @@ class _ViewTransactionsState extends State<ViewTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.blueGrey.shade50,
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey[400],
+        title: const Text("Money Wisely"),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        elevation: 1,
+      ),
       body: SafeArea(
         child: ListView.builder(
           scrollDirection: Axis.vertical,
@@ -80,7 +87,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
         onPressed: () {
           _navigateToAddTransaction(context);
         },
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.blueGrey[400],
         child: const Icon(Icons.add),
       ),
     );
@@ -92,7 +99,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
       margin: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: Colors.grey[200],
         ),
         child: transactionsListTitle(index),
       ),
@@ -137,7 +144,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
       subtitle: Text(
         transactions![index].amount.toString(),
         style: const TextStyle(
-          color: Colors.grey,
+          color: Colors.blueGrey,
           fontSize: 12.0,
         ),
       ),

@@ -62,9 +62,9 @@ class _AddEnvelopState extends State<AddEnvelop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.blueGrey[400],
         title: const Text("Add Envelop"),
         // automaticallyImplyLeading: false,
         centerTitle: true,

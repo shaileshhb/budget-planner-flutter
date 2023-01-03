@@ -25,7 +25,7 @@ class EnvelopSkeleton extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.grey[400],
+          color: Colors.blueGrey[300],
         ),
       ),
     );

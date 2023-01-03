@@ -1,1 +1,10 @@
 build command: flutter build apk --release
+build command 2: flutter build apk --no-shrink (worked for me)
+
+for access internet in release mode add following line to AndroidManifest.xml in android/app/src/main
+<uses-permission android:name="android.permission.INTERNET"/>
+
+if you face java runtime error related to kotlin change dependencies in build.gradle in android/app/build.gradle
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}

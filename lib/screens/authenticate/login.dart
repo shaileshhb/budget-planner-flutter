@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.blueGrey[50],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -85,10 +85,10 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 50),
 
                   // logo
-                  const Icon(
-                    Icons.lock,
-                    size: 100,
-                  ),
+                  // const Icon(
+                  //   Icons.lock,
+                  //   size: 100,
+                  // ),
 
                   const SizedBox(height: 50),
 

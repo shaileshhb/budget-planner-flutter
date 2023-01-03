@@ -20,18 +20,21 @@ class Envelops {
     this.userId,
     required this.name,
     required this.amount,
+    this.amountSpent,
   });
 
   String? id;
   String name;
   String? userId;
   double amount;
+  double? amountSpent;
 
   factory Envelops.fromJson(Map<String, dynamic> json) => Envelops(
         id: json["id"],
         name: json["name"],
         userId: json["userID"],
         amount: json["amount"].toDouble(),
+        amountSpent: json["amountSpent"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +42,6 @@ class Envelops {
         "name": name,
         "userID": userId,
         "amount": amount,
+        "amountSpent": amountSpent,
       };
 }
