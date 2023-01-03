@@ -88,17 +88,14 @@ class ViewEnvelopState extends State<ViewEnvelop> {
                           100 <=
                       50.0)
                   ? [
-                      const Color.fromARGB(255, 125, 219, 161),
-                      const Color.fromARGB(255, 121, 221, 166)
+                      const Color(0xFF9FC97F),
+                      const Color(0xFF54B435),
                     ]
                   : ((envelops![index].amountSpent! / envelops![index].amount) *
                               100 <=
                           75.0)
-                      ? [
-                          const Color.fromARGB(255, 241, 241, 78),
-                          const Color.fromARGB(255, 241, 241, 71)
-                        ]
-                      : [Colors.pink, Colors.red],
+                      ? [const Color(0xFFFFE988), const Color(0xFFF49D1A)]
+                      : [const Color(0xFFFF8B8B), const Color(0xFFEB4747)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
