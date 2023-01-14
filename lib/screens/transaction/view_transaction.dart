@@ -36,7 +36,6 @@ class _ViewTransactionsState extends State<ViewTransactions> {
       if (response != null) {
         setState(() {
           transactions = response;
-          print("transactions -> $transactions");
           isLoaded = true;
           return;
         });
@@ -106,11 +105,24 @@ class _ViewTransactionsState extends State<ViewTransactions> {
     );
   }
 
+  void _navigateToUpdateTransaction(
+      BuildContext context, TransactionModel transaction) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTransaction.update(
+          isUpdate: true,
+          transaction: transaction,
+        ),
+      ),
+    );
+  }
+
   ListTile transactionsListTitle(int index) {
     return ListTile(
       onTap: () {
-        print(
-            "card keyboard right arrow pressed for ${transactions![index].id}");
+        // print("card keyboard right arrow pressed for ${transactions![index].id}");
+        _navigateToUpdateTransaction(context, transactions![index]);
       },
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 20.0,

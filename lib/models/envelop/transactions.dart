@@ -24,7 +24,7 @@ class TransactionModel {
     required this.amount,
     required this.date,
     required this.transactionType,
-    required this.envelopId,
+    required this.envelopID,
   });
 
   String? id;
@@ -34,7 +34,7 @@ class TransactionModel {
   String transactionType;
   dynamic description;
   EnvelopModel? envelop;
-  String envelopId;
+  String envelopID;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(
@@ -45,7 +45,7 @@ class TransactionModel {
         transactionType: json["transactionType"],
         description: json["description"],
         envelop: EnvelopModel.fromJson(json["envelop"]),
-        envelopId: json["envelopID"],
+        envelopID: json["envelopID"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -56,6 +56,6 @@ class TransactionModel {
         "transactionType": transactionType,
         "description": description,
         "envelop": envelop == null ? null : envelop!.toJson(),
-        "envelopID": envelopId,
+        "envelopID": envelopID,
       };
 }

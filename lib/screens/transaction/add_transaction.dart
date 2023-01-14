@@ -1,8 +1,10 @@
 import 'package:budget_planner_flutter/models/envelop/transactions.dart';
+import 'package:budget_planner_flutter/screens/home/dashboard.dart';
 import 'package:budget_planner_flutter/screens/transaction/view_transaction.dart';
 import 'package:budget_planner_flutter/services/envelop/transactions.dart';
 import 'package:budget_planner_flutter/utils/user.shared_preference.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/envelop/envelop.dart';
 import '../../services/envelop/envelops.dart';
@@ -12,7 +14,26 @@ import '../components/custom_submit_button.dart';
 import '../components/custom_text_field.dart';
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({Key? key}) : super(key: key);
+  final bool isUpdate;
+  final TransactionModel? transaction;
+
+  const AddTransaction({
+    Key? key,
+    this.isUpdate = false,
+    this.transaction,
+  }) : super(key: key);
+
+  const AddTransaction.add({
+    Key? key,
+    this.isUpdate = false,
+    this.transaction,
+  }) : super(key: key);
+
+  const AddTransaction.update({
+    Key? key,
+    this.isUpdate = true,
+    required this.transaction,
+  }) : super(key: key);
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -31,32 +52,41 @@ class _AddTransactionState extends State<AddTransaction> {
 
   List<EnvelopModel>? envelops;
   List<String> envelopNames = [];
-  List<String> envelopIds = [];
+  List<String> envelopIDs = [];
   List<String> transactionType = ["Income", "Expense"];
   String? selectedTransactionType = "";
-  String? selectedEnvelopId;
+  String? selectedEnvelopName;
 
   void initializeTransactionType() {
     setState(() {
       selectedTransactionType = transactionType[0];
+      if (widget.isUpdate) {
+        selectedTransactionType = widget.transaction!.transactionType;
+      }
     });
   }
 
   void processEnvelops() {
     setState(() {
       envelopNames = [];
-      envelopIds = [];
+      envelopIDs = [];
       for (var i = 0; i < envelops!.length; i++) {
         envelopNames.add(envelops![i].name);
-        envelopIds.add(envelops![i].id!);
+        envelopIDs.add(envelops![i].id!);
+      }
+
+      selectedEnvelopName = envelopNames[0];
+
+      if (widget.isUpdate) {
+        selectedEnvelopName = envelopNames[
+            envelopNames.indexOf(widget.transaction!.envelop!.name)];
       }
     });
   }
 
   void initializeEnvelop() {
     setState(() {
-      selectedEnvelopId = envelopIds[0];
-      envelopIDController.text = selectedEnvelopId!;
+      envelopIDController.text = envelopIDs[0];
     });
   }
 
@@ -69,8 +99,7 @@ class _AddTransactionState extends State<AddTransaction> {
   void onEnvelopChange(String? envelopName) {
     setState(() {
       var index = envelopNames.indexOf(envelopName!);
-      selectedEnvelopId = envelopIds[index];
-      envelopIDController.text = selectedEnvelopId!;
+      envelopIDController.text = envelopIDs[index];
     });
   }
 
@@ -81,7 +110,17 @@ class _AddTransactionState extends State<AddTransaction> {
     initializeTransactionType();
     setState(() {
       userIDController.text = UserSharedPreference.getUserID()!;
+      if (widget.isUpdate) {
+        payeeController.text = widget.transaction!.payee;
+        amountController.text = widget.transaction!.amount.toString();
+        dateController.text = formatDate(widget.transaction!.date);
+        envelopIDController.text = widget.transaction!.envelopID;
+      }
     });
+  }
+
+  String formatDate(String date) {
+    return DateFormat('yyyy-MM-dd').format(DateTime.parse(date));
   }
 
   void getUserEnvelops() async {
@@ -102,6 +141,10 @@ class _AddTransactionState extends State<AddTransaction> {
   void validateUserTransaction() {
     if (formGlobalKey.currentState!.validate()) {
       formGlobalKey.currentState!.save();
+      if (widget.isUpdate) {
+        updateUserTransaction(context);
+        return;
+      }
       addUserTransaction(context);
     }
   }
@@ -113,26 +156,52 @@ class _AddTransactionState extends State<AddTransaction> {
         amount: double.parse(amountController.text),
         date: dateController.text,
         transactionType: selectedTransactionType!,
-        envelopId: envelopIDController.text,
+        envelopID: envelopIDController.text,
       );
 
       var response = await TransactionService().addUserTransaction(transaction);
-      print(response);
 
       if (response) {
-        _navigateToViewTransaction(context);
+        _navigateToTransaction(context);
         formGlobalKey.currentState!.reset();
       }
-
-      print(transaction);
     } catch (err) {
       print(err);
     }
   }
 
-  void _navigateToViewTransaction(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const ViewTransactions()));
+  void updateUserTransaction(context) async {
+    try {
+      var transaction = TransactionModel(
+        id: widget.transaction!.id,
+        payee: payeeController.text,
+        amount: double.parse(amountController.text),
+        date: dateController.text,
+        transactionType: selectedTransactionType!,
+        envelopID: envelopIDController.text,
+      );
+
+      var response =
+          await TransactionService().updateUserTransaction(transaction);
+
+      if (response) {
+        _navigateToTransaction(context);
+        formGlobalKey.currentState!.reset();
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void _navigateToTransaction(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Dashboard(
+          selectedIndex: 1,
+        ),
+      ),
+    );
   }
 
   @override
@@ -141,7 +210,7 @@ class _AddTransactionState extends State<AddTransaction> {
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[400],
-        title: const Text("Add Transaction"),
+        title: Text(widget.isUpdate ? "Update Transaction" : "Add Transaction"),
         // automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 1,
@@ -216,6 +285,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     onChanged: onEnvelopChange,
                     items: envelops != null ? envelopNames : [],
                     hintText: "Envelop",
+                    selectedValue: selectedEnvelopName,
                     validator: (envelop) {
                       if (envelop!.isEmpty) {
                         return "Envelop must be selected";
