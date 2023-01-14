@@ -1,5 +1,6 @@
 import 'package:budget_planner_flutter/models/envelop/envelop.dart';
 import 'package:budget_planner_flutter/screens/envelops/envelop.dart';
+import 'package:budget_planner_flutter/screens/home/dashboard.dart';
 import 'package:budget_planner_flutter/services/envelop/envelops.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,26 @@ import '../components/custom_submit_button.dart';
 import '../components/custom_text_field.dart';
 
 class AddEnvelop extends StatefulWidget {
-  const AddEnvelop({Key? key}) : super(key: key);
+  final bool isUpdate;
+  final EnvelopModel? envelop;
+
+  const AddEnvelop({
+    Key? key,
+    this.isUpdate = false,
+    this.envelop,
+  }) : super(key: key);
+
+  const AddEnvelop.add({
+    Key? key,
+    this.isUpdate = false,
+    this.envelop,
+  }) : super(key: key);
+
+  const AddEnvelop.update({
+    Key? key,
+    this.isUpdate = true,
+    required this.envelop,
+  }) : super(key: key);
 
   @override
   State<AddEnvelop> createState() => _AddEnvelopState();
@@ -26,19 +46,28 @@ class _AddEnvelopState extends State<AddEnvelop> {
     super.initState();
     setState(() {
       userIDController.text = UserSharedPreference.getUserID()!;
+      if (widget.isUpdate) {
+        print(widget.envelop!.toJson());
+        nameController.text = widget.envelop!.name;
+        amountController.text = widget.envelop!.amount.toString();
+      }
     });
   }
 
   validateUserEnvelop() {
     if (formGlobalKey.currentState!.validate()) {
       formGlobalKey.currentState!.save();
+      if (widget.isUpdate) {
+        updateUserEnvelop(context);
+        return;
+      }
       addUserEnvelop(context);
     }
   }
 
-  void addUserEnvelop(context) async {
+  void addUserEnvelop(BuildContext context) async {
     try {
-      var envelop = Envelops(
+      var envelop = EnvelopModel(
         amount: double.parse(amountController.text),
         name: nameController.text,
       );
@@ -46,7 +75,30 @@ class _AddEnvelopState extends State<AddEnvelop> {
       var response = await EnvelopService().addUserEnvelop(envelop);
 
       if (response) {
-        _navigateToViewEnvelop(context);
+        if (mounted) {
+          _navigateToViewEnvelop(context);
+        }
+        formGlobalKey.currentState!.reset();
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void updateUserEnvelop(BuildContext context) async {
+    try {
+      var envelop = EnvelopModel(
+        id: widget.envelop!.id,
+        amount: double.parse(amountController.text),
+        name: nameController.text,
+      );
+
+      var response = await EnvelopService().updateUserEnvelop(envelop);
+
+      if (response) {
+        if (mounted) {
+          _navigateToViewEnvelop(context);
+        }
         formGlobalKey.currentState!.reset();
       }
     } catch (err) {
@@ -56,7 +108,11 @@ class _AddEnvelopState extends State<AddEnvelop> {
 
   void _navigateToViewEnvelop(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const ViewEnvelop()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Dashboard(selectedIndex: 0),
+      ),
+    );
   }
 
   @override
@@ -65,7 +121,7 @@ class _AddEnvelopState extends State<AddEnvelop> {
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[400],
-        title: const Text("Add Envelop"),
+        title: Text(widget.isUpdate ? "Update Envelop" : "Add Envelop"),
         // automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 1,

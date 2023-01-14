@@ -14,7 +14,7 @@ class ViewTransactions extends StatefulWidget {
 }
 
 class _ViewTransactionsState extends State<ViewTransactions> {
-  List<Transaction>? transactions;
+  List<TransactionModel>? transactions;
   bool isLoaded = false;
   int monthIndex = 0;
 

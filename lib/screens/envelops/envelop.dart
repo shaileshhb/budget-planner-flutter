@@ -14,7 +14,7 @@ class ViewEnvelop extends StatefulWidget {
 }
 
 class ViewEnvelopState extends State<ViewEnvelop> {
-  List<Envelops>? envelops;
+  List<EnvelopModel>? envelops;
   bool isLoaded = false;
 
   @override
@@ -40,7 +40,9 @@ class ViewEnvelopState extends State<ViewEnvelop> {
 
   void _navigateToAddEnvelop(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const AddEnvelop()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => const AddEnvelop.add(isUpdate: false)));
   }
 
   @override
@@ -124,10 +126,23 @@ class ViewEnvelopState extends State<ViewEnvelop> {
     );
   }
 
+  void _navigateToUpdateEnvelop(BuildContext context, EnvelopModel envelop) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddEnvelop.update(
+          isUpdate: true,
+          envelop: envelop,
+        ),
+      ),
+    );
+  }
+
   ListTile envelopListTitle(int index) {
     return ListTile(
       onTap: () {
-        print("card keyboard right arrow pressed for ${envelops![index].name}");
+        // print("card keyboard right arrow pressed for ${envelops![index].name}");
+        _navigateToUpdateEnvelop(context, envelops![index]);
       },
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 20.0,

@@ -29,7 +29,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   final formGlobalKey = GlobalKey<FormState>();
 
-  List<Envelops>? envelops;
+  List<EnvelopModel>? envelops;
   List<String> envelopNames = [];
   List<String> envelopIds = [];
   List<String> transactionType = ["Income", "Expense"];
@@ -108,7 +108,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   void addUserTransaction(context) async {
     try {
-      var transaction = Transaction(
+      var transaction = TransactionModel(
         payee: payeeController.text,
         amount: double.parse(amountController.text),
         date: dateController.text,
@@ -131,7 +131,6 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   void _navigateToViewTransaction(BuildContext context) {
-    print("_navigateToViewTransaction");
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ViewTransactions()));
   }

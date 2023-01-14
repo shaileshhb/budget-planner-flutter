@@ -6,16 +6,17 @@ import 'dart:convert';
 
 import 'package:budget_planner_flutter/models/envelop/envelop.dart';
 
-List<Transaction> transactionsFromJson(String str) => List<Transaction>.from(
-    json.decode(str).map((x) => Transaction.fromJson(x)));
+List<TransactionModel> transactionsFromJson(String str) =>
+    List<TransactionModel>.from(
+        json.decode(str).map((x) => TransactionModel.fromJson(x)));
 
-String transactionsToJson(List<Transaction> data) =>
+String transactionsToJson(List<TransactionModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-String transactionToJson(Transaction data) => json.encode(data.toJson());
+String transactionToJson(TransactionModel data) => json.encode(data.toJson());
 
-class Transaction {
-  Transaction({
+class TransactionModel {
+  TransactionModel({
     this.id,
     this.description,
     this.envelop,
@@ -32,17 +33,18 @@ class Transaction {
   String date;
   String transactionType;
   dynamic description;
-  Envelops? envelop;
+  EnvelopModel? envelop;
   String envelopId;
 
-  factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
+  factory TransactionModel.fromJson(Map<String, dynamic> json) =>
+      TransactionModel(
         id: json["id"],
         payee: json["payee"],
         amount: json["amount"].toDouble(),
         date: json["date"],
         transactionType: json["transactionType"],
         description: json["description"],
-        envelop: Envelops.fromJson(json["envelop"]),
+        envelop: EnvelopModel.fromJson(json["envelop"]),
         envelopId: json["envelopID"],
       );
 

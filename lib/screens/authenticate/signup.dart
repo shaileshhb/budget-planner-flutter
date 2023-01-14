@@ -2,6 +2,7 @@ import 'package:budget_planner_flutter/models/auth/register_request.dart';
 import 'package:budget_planner_flutter/screens/authenticate/components/signup_dropdown.dart';
 import 'package:budget_planner_flutter/screens/authenticate/login.dart';
 import 'package:budget_planner_flutter/screens/home/dashboard.dart';
+import 'package:budget_planner_flutter/screens/onboarding/onboarding_screen.dart';
 import 'package:budget_planner_flutter/services/auth/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +71,7 @@ class _RegisterState extends State<Register> {
 
         // navigate to dashboard
         if (mounted) {
-          _navigateToDashboard(context);
+          _navigateToOnboardingScreen(context);
         }
       }
     } catch (err) {
@@ -91,9 +92,9 @@ class _RegisterState extends State<Register> {
         context, MaterialPageRoute(builder: (context) => const Login()));
   }
 
-  void _navigateToDashboard(BuildContext context) {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const Dashboard()));
+  void _navigateToOnboardingScreen(BuildContext context) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const OnboardingScreen()));
   }
 
   @override
@@ -194,12 +195,6 @@ class _RegisterState extends State<Register> {
 
                   const SizedBox(height: 15),
 
-                  // LoginFormField(
-                  //   controller: genderController,
-                  //   hintText: "Gender",
-                  //   obscureText: false,
-                  // ),
-
                   // controller: genderController,
                   DropdownField(
                     items: genderList,
@@ -220,12 +215,6 @@ class _RegisterState extends State<Register> {
 
                   const SizedBox(height: 15),
 
-                  // LoginFormField(
-                  // controller: dateOfBirthController,
-                  // hintText: "Date of birth",
-                  //   obscureText: false,
-                  // ),
-
                   DateOfBirthField(
                     controller: dateOfBirthController,
                     hintText: "Date of birth",
@@ -235,7 +224,9 @@ class _RegisterState extends State<Register> {
 
                   // login button
                   LoginButton(
-                      onTap: validateUserRegister, buttonLabel: "Register"),
+                    onTap: validateUserRegister,
+                    buttonLabel: "Register",
+                  ),
 
                   const SizedBox(height: 30),
 

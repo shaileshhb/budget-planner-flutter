@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../../utils/global.constant.dart';
 
 class TransactionService {
-  Future<List<Transaction>?> getUserTransactions(
+  Future<List<TransactionModel>?> getUserTransactions(
       Map<String, dynamic> queryparams) async {
     var client = http.Client();
 
@@ -31,7 +31,7 @@ class TransactionService {
     return null;
   }
 
-  Future<bool> addUserTransaction(Transaction transaction) async {
+  Future<bool> addUserTransaction(TransactionModel transaction) async {
     var client = http.Client();
 
     var userID = UserSharedPreference.getUserID();

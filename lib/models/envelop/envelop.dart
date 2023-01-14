@@ -4,18 +4,19 @@
 
 import 'dart:convert';
 
-List<Envelops> envelopsFromJson(String str) =>
-    List<Envelops>.from(json.decode(str).map((x) => Envelops.fromJson(x)));
+List<EnvelopModel> envelopsFromJson(String str) => List<EnvelopModel>.from(
+    json.decode(str).map((x) => EnvelopModel.fromJson(x)));
 
-Envelops envelopFromJson(String str) => Envelops.fromJson(json.decode(str));
+EnvelopModel envelopFromJson(String str) =>
+    EnvelopModel.fromJson(json.decode(str));
 
-String envelopsToJson(List<Envelops> data) =>
+String envelopsToJson(List<EnvelopModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-String envelopToJson(Envelops data) => json.encode(data.toJson());
+String envelopToJson(EnvelopModel data) => json.encode(data.toJson());
 
-class Envelops {
-  Envelops({
+class EnvelopModel {
+  EnvelopModel({
     this.id,
     this.userId,
     required this.name,
@@ -29,7 +30,7 @@ class Envelops {
   double amount;
   double? amountSpent;
 
-  factory Envelops.fromJson(Map<String, dynamic> json) => Envelops(
+  factory EnvelopModel.fromJson(Map<String, dynamic> json) => EnvelopModel(
         id: json["id"],
         name: json["name"],
         userId: json["userID"],

@@ -4,7 +4,12 @@ import 'package:budget_planner_flutter/screens/transaction/view_transaction.dart
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  final int selectedIndex;
+
+  const Dashboard({
+    Key? key,
+    this.selectedIndex = 0,
+  }) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -19,6 +24,12 @@ class _DashboardState extends State<Dashboard> {
     Profile(),
     // Envelop(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
