@@ -19,21 +19,34 @@ class ViewEnvelopState extends State<ViewEnvelop> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      envelops = [];
+    });
     getUserEnvelops();
   }
 
   getUserEnvelops() async {
     try {
       var response = await EnvelopService().getUserEnvelops();
+      print("response -> $response");
       if (response != null) {
         setState(() {
           envelops = response;
-          isLoaded = true;
         });
+
+        // if (mounted) {
+        //   const message = "Envelops fetched";
+        //   const snackBar = SnackBar(content: Text(message));
+
+        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // }
       }
     } catch (err) {
-      isLoaded = true;
       print(err);
+    } finally {
+      setState(() {
+        isLoaded = true;
+      });
     }
   }
 
@@ -56,14 +69,26 @@ class ViewEnvelopState extends State<ViewEnvelop> {
         elevation: 1,
       ),
       body: SafeArea(
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: isLoaded ? envelops!.length : 5,
-          itemBuilder: (context, index) {
-            return isLoaded ? envelopCard(index) : const SkeletonCardBuilder();
-          },
-        ),
+        //
+        child: isLoaded && envelops != null && envelops!.isEmpty
+            ? const Center(
+                child: Text(
+                  "No Envelops found!!",
+                  style: TextStyle(
+                    fontSize: 25.0,
+                  ),
+                ),
+              )
+            : ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: isLoaded ? envelops!.length : 5,
+                itemBuilder: (context, index) {
+                  return isLoaded
+                      ? envelopCard(index)
+                      : const SkeletonCardBuilder();
+                },
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -137,27 +162,6 @@ class ViewEnvelopState extends State<ViewEnvelop> {
     );
   }
 
-  void onDeleteEnvelopClick(String envelopID) {
-    // print("onDeleteEnvelopClick");
-    deleteUserEnvelop(envelopID);
-  }
-
-  void deleteUserEnvelop(String envelopID) async {
-    try {
-      var response = await EnvelopService().deleteUserEnvelop(envelopID);
-
-      if (response) {
-        setState(() {
-          envelops = [];
-          isLoaded = false;
-          getUserEnvelops();
-        });
-      }
-    } catch (err) {
-      print(err);
-    }
-  }
-
   ListTile envelopListTitle(int index) {
     return ListTile(
       onTap: () {
@@ -214,5 +218,26 @@ class ViewEnvelopState extends State<ViewEnvelop> {
         ),
       ),
     );
+  }
+
+  void onDeleteEnvelopClick(String envelopID) {
+    // print("onDeleteEnvelopClick");
+    deleteUserEnvelop(envelopID);
+  }
+
+  void deleteUserEnvelop(String envelopID) async {
+    try {
+      var response = await EnvelopService().deleteUserEnvelop(envelopID);
+
+      if (response) {
+        setState(() {
+          envelops = [];
+          isLoaded = false;
+          getUserEnvelops();
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 }

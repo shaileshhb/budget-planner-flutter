@@ -40,11 +40,12 @@ class _ViewTransactionsState extends State<ViewTransactions> {
           return;
         });
       }
+    } catch (err) {
+      print(err);
+    } finally {
       setState(() {
         isLoaded = true;
       });
-    } catch (err) {
-      print(err);
     }
   }
 
@@ -71,16 +72,25 @@ class _ViewTransactionsState extends State<ViewTransactions> {
         elevation: 1,
       ),
       body: SafeArea(
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: isLoaded ? transactions!.length : 10,
-          itemBuilder: (context, index) {
-            return isLoaded
-                ? transactionCard(index)
-                : const SkeletonCardBuilder();
-          },
-        ),
+        child: isLoaded && transactions!.isEmpty
+            ? const Center(
+                child: Text(
+                  "No Transactions found!!",
+                  style: TextStyle(
+                    fontSize: 25.0,
+                  ),
+                ),
+              )
+            : ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: isLoaded ? transactions!.length : 10,
+                itemBuilder: (context, index) {
+                  return isLoaded
+                      ? transactionCard(index)
+                      : const SkeletonCardBuilder();
+                },
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -116,28 +126,6 @@ class _ViewTransactionsState extends State<ViewTransactions> {
         ),
       ),
     );
-  }
-
-  void onDeleteTransactionClick(String transactionID) {
-    deleteUserTransaction(transactionID);
-  }
-
-  void deleteUserTransaction(String transactionID) async {
-    try {
-      print("deleteUserTransaction");
-      var response =
-          await TransactionService().deleteUserTransaction(transactionID);
-
-      if (response) {
-        setState(() {
-          transactions = [];
-          isLoaded = false;
-          getUserTransactions();
-        });
-      }
-    } catch (err) {
-      print(err);
-    }
   }
 
   ListTile transactionsListTitle(int index) {
@@ -196,5 +184,26 @@ class _ViewTransactionsState extends State<ViewTransactions> {
         ),
       ),
     );
+  }
+
+  void onDeleteTransactionClick(String transactionID) {
+    deleteUserTransaction(transactionID);
+  }
+
+  void deleteUserTransaction(String transactionID) async {
+    try {
+      var response =
+          await TransactionService().deleteUserTransaction(transactionID);
+
+      if (response) {
+        setState(() {
+          transactions = [];
+          isLoaded = false;
+          getUserTransactions();
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 }
