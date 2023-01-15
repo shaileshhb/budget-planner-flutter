@@ -72,4 +72,26 @@ class EnvelopService {
     }
     return false;
   }
+
+  Future<bool> deleteUserEnvelop(String envelopID) async {
+    var client = http.Client();
+
+    var userID = UserSharedPreference.getUserID();
+    var authorizationToken = UserSharedPreference.getAuthorizationToken();
+
+    var uri = Uri.parse(
+        '${GlobalConstants.baseURL}/users/$userID/envelops/$envelopID');
+
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $authorizationToken"
+    };
+
+    var response = await client.delete(uri, headers: headers);
+
+    if (response.statusCode == 202) {
+      return true;
+    }
+    return false;
+  }
 }

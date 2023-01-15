@@ -78,4 +78,31 @@ class TransactionService {
     }
     return false;
   }
+
+  Future<bool> deleteUserTransaction(String transactionID) async {
+    var client = http.Client();
+
+    var userID = UserSharedPreference.getUserID();
+    var authorizationToken = UserSharedPreference.getAuthorizationToken();
+
+    print(transactionID);
+
+    var uri = Uri.parse(
+        '${GlobalConstants.baseURL}/users/$userID/transactions/$transactionID');
+
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $authorizationToken"
+    };
+
+    print(uri);
+
+    var response = await client.delete(uri, headers: headers);
+
+    print(response.statusCode);
+    if (response.statusCode == 202) {
+      return true;
+    }
+    return false;
+  }
 }

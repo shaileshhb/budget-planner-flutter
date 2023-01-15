@@ -172,7 +172,9 @@ class _RegisterState extends State<Register> {
                     hintText: "Email",
                     obscureText: false,
                     validator: (email) {
-                      if (email!.isEmpty) {
+                      if (email!.isEmpty ||
+                          !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(email)) {
                         return "Invalid email";
                       }
                       return null;

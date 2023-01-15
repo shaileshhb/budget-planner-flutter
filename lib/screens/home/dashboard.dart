@@ -76,7 +76,6 @@ class _DashboardState extends State<Dashboard> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
-      // body: const ChatPage(),
       body: _widgetOptions.elementAt(_selectedIndex),
     );
   }

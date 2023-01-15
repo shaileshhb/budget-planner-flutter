@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../models/envelop/envelop.dart';
 import '../../services/envelop/envelops.dart';
-import '../transaction/add_transaction.dart';
 
 class ViewEnvelop extends StatefulWidget {
   const ViewEnvelop({Key? key}) : super(key: key);
@@ -138,6 +137,27 @@ class ViewEnvelopState extends State<ViewEnvelop> {
     );
   }
 
+  void onDeleteEnvelopClick(String envelopID) {
+    // print("onDeleteEnvelopClick");
+    deleteUserEnvelop(envelopID);
+  }
+
+  void deleteUserEnvelop(String envelopID) async {
+    try {
+      var response = await EnvelopService().deleteUserEnvelop(envelopID);
+
+      if (response) {
+        setState(() {
+          envelops = [];
+          isLoaded = false;
+          getUserEnvelops();
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
   ListTile envelopListTitle(int index) {
     return ListTile(
       onTap: () {
@@ -165,6 +185,19 @@ class ViewEnvelopState extends State<ViewEnvelop> {
           size: 40.0,
         ),
       ),
+      trailing: Container(
+        padding: const EdgeInsets.only(
+          right: 12.0,
+        ),
+        // decoration: const BoxDecoration(
+        // ),
+        child: IconButton(
+          onPressed: () => onDeleteEnvelopClick(envelops![index].id!),
+          icon: const Icon(Icons.delete),
+          color: const Color(0xFFDB0F00),
+          iconSize: 30.0,
+        ),
+      ),
       title: Text(
         envelops![index].name,
         style: const TextStyle(
@@ -174,7 +207,7 @@ class ViewEnvelopState extends State<ViewEnvelop> {
         ),
       ),
       subtitle: Text(
-        envelops![index].amount.toString(),
+        "Amount Left: ${(envelops![index].amount - envelops![index].amountSpent!).toString()}",
         style: const TextStyle(
           color: Colors.black,
           fontSize: 12.0,

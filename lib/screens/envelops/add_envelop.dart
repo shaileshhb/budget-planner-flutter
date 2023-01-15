@@ -46,7 +46,6 @@ class _AddEnvelopState extends State<AddEnvelop> {
     setState(() {
       userIDController.text = UserSharedPreference.getUserID()!;
       if (widget.isUpdate) {
-        print(widget.envelop!.toJson());
         nameController.text = widget.envelop!.name;
         amountController.text = widget.envelop!.amount.toString();
       }

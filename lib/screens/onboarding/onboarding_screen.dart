@@ -76,7 +76,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_pageController.page == onboardData.length - 1) {
-                          print("next clicked on last page");
                           _navigateToAddEnvelop(context);
                           return;
                         }
@@ -85,12 +84,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.ease,
                         );
-                        print(_pageController.page);
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
+                        primary: Colors.blueGrey[400],
                       ),
-                      child: const Icon(Icons.arrow_right_alt_sharp),
+                      child: const Icon(Icons.arrow_forward_sharp),
                     ),
                   ),
                 ],
@@ -118,7 +117,7 @@ class DotIndicator extends StatelessWidget {
       height: isActive ? 12 : 4,
       width: 4,
       decoration: BoxDecoration(
-        color: isActive ? Colors.blueGrey[300] : Colors.blueGrey[100],
+        color: isActive ? Colors.blueGrey[400] : Colors.blueGrey[200],
         borderRadius: const BorderRadius.all(
           Radius.circular(12),
         ),

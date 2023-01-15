@@ -118,6 +118,28 @@ class _ViewTransactionsState extends State<ViewTransactions> {
     );
   }
 
+  void onDeleteTransactionClick(String transactionID) {
+    deleteUserTransaction(transactionID);
+  }
+
+  void deleteUserTransaction(String transactionID) async {
+    try {
+      print("deleteUserTransaction");
+      var response =
+          await TransactionService().deleteUserTransaction(transactionID);
+
+      if (response) {
+        setState(() {
+          transactions = [];
+          isLoaded = false;
+          getUserTransactions();
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
   ListTile transactionsListTitle(int index) {
     return ListTile(
       onTap: () {
@@ -143,6 +165,19 @@ class _ViewTransactionsState extends State<ViewTransactions> {
         child: const Icon(
           Icons.monetization_on,
           size: 40.0,
+        ),
+      ),
+      trailing: Container(
+        padding: const EdgeInsets.only(
+          right: 12.0,
+        ),
+        // decoration: const BoxDecoration(
+        // ),
+        child: IconButton(
+          onPressed: () => onDeleteTransactionClick(transactions![index].id!),
+          icon: const Icon(Icons.delete),
+          color: const Color(0xFFDB0F00),
+          iconSize: 30.0,
         ),
       ),
       title: Text(
