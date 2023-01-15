@@ -72,7 +72,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
         elevation: 1,
       ),
       body: SafeArea(
-        child: isLoaded && transactions!.isEmpty
+        child: isLoaded && transactions != null && transactions!.isEmpty
             ? const Center(
                 child: Text(
                   "No Transactions found!!",
